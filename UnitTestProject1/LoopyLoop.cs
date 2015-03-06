@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
 
 namespace UnitTestProject1
 {
@@ -14,8 +16,9 @@ namespace UnitTestProject1
             Parallel.For(0, 1000, v =>
             {
                 var x = counter + 1;
+                Thread.Sleep(1);
                 counter = x;
-                // counter++;
+                //counter++;
             });
 
             Assert.AreEqual(1000, counter);

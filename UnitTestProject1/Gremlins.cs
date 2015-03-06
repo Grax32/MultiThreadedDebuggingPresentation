@@ -14,31 +14,44 @@ namespace UnitTestProject1
         Dictionary<object, string> _answers = new Dictionary<object, string>();
 
         [TestMethod]
-        public void DoTheGremlinTest()
+        public async Task DoTheGremlinTest()
         {
-            var tasks = new List<Task>();
-            var answer = "";
+            await Launch();
+        }
 
-            Action<object> locateAnswer = (object state) =>
+        public async Task Launch()
+        {
+            var tasks = new List<Task<int>>();
+            var answer = "";
+            var turns = 100;
+
+            Func<object, int> locateAnswer = (value) =>
             {
-                answer = state.ToString().ChangeNumericToWords();
-                //Thread.Sleep(1);
-                Debug.Print(state.ToString() + ":" + answer);
-                _answers.Add(state, answer);
+                answer = value.ToString() + ":" + value.ToString().ChangeNumericToWords();
+                Debug.Print(value.ToString() + ":" + answer);
+                _answers.Add(value, answer);  // to debug, set condition on breakpoint to  (!answer.StartsWith(value.ToString()))
+                return (int)value;
             };
 
-            for (var z = 0; z < 100; z++)
+
+
+
+            await Task.Run(() =>
             {
-                var task = new Task(locateAnswer, z);
-                tasks.Add(task);
-            }
+                for (var z = 0; z < turns; z++)
+                {
+                    tasks.Add(new Task<int>(locateAnswer, z));
+                }
+            });
 
             tasks.ForEach(v => v.Start());
 
-            Task.WaitAll(tasks.ToArray());
+            int tmp;
+            tasks.ForEach(v => { tmp = v.Result; });
 
             // require that there be no duplicates
             Assert.AreEqual(_answers.Values.Count(), _answers.Values.Distinct().Count());
+            Assert.AreEqual(turns, _answers.Values.Count);
         }
     }
 }

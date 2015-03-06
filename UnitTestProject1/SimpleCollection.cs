@@ -9,45 +9,46 @@ namespace UnitTestProject1
 {
     public class SimpleCollection
     {
-        int[] values = new int[2];
-        int next = -1;
-        object lockObj = new object();
-        object unlockObj = new object();
+        int[] _values = new int[2];
+        int _next = -1;
+        object _lockObj = new object();
 
         public void Add(int value)
         {
-            var vLength = values.Length;
-            var vTest = values;
-            //var id = Interlocked.Increment(ref next);
-            var id = ++next;
-            var newValues = new int[0];
+            var id = Interlocked.Increment(ref _next);
 
-            if (id >= values.Length)
+            var valueArray = _values;
+
+            if (id >= _values.Length)
             {
-                newValues = Resize(id + 1);
+                valueArray = Resize(id + 2);
             }
 
-            values[id] = value;
+            valueArray[id] = value;  // use condition of !valueArray.equals(_values)
         }
 
 
         private int[] Resize(int size)
         {
-            lock (lockObj)
+            lock (_lockObj)
             {
-                Thread.Sleep(50);
-                if (size > values.Length)
+                if (size > _values.Length)
                 {
                     var newValues = new int[size];
 
-                    Array.Copy(values, newValues, values.Length);
+                    Array.Copy(_values, newValues, _values.Length);
 
-                    values = newValues;
+                    _values = newValues;
                 }
-                return values;
+
+                Thread.Sleep(5);
+
+                return _values;
             }
         }
 
-        public int Length { get { return next + 1; } }
+        public int Length { get { return _next + 1; } }
+
+        public int[] Values { get { return _values; } }
     }
 }
