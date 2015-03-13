@@ -21,7 +21,7 @@ namespace UnitTestProject1
 
             if (id >= _values.Length)
             {
-                valueArray = Resize(id + 2);
+                valueArray = Resize(id + 15);
             }
 
             valueArray[id] = value;  // use condition of !valueArray.equals(_values)
@@ -41,7 +41,7 @@ namespace UnitTestProject1
                     _values = newValues;
                 }
 
-                Thread.Sleep(5);
+                Thread.Sleep(15);
 
                 return _values;
             }

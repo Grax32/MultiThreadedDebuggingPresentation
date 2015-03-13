@@ -9,10 +9,11 @@ namespace UnitTestProject1
     [TestClass]
     public class LoopyLoop
     {
+        int counter = 0;
+
         [TestMethod]
         public void DoTheLoopyLoop1()
         {
-            var counter = 0;
             Parallel.For(0, 1000, v =>
             {
                 var x = counter + 1;
