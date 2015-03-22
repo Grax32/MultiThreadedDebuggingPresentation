@@ -16,10 +16,14 @@ namespace UnitTestProject1
         {
             Parallel.For(0, 1000, v =>
             {
+#if BROKEN
                 var x = counter + 1;
                 Thread.Sleep(1);
-                counter = x;
+                counter = x; // use breakpoint condition of (counter + 1 != x)
                 //counter++;
+#else
+                Interlocked.Increment(ref counter);
+#endif
             });
 
             Assert.AreEqual(1000, counter);

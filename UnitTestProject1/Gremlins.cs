@@ -22,12 +22,19 @@ namespace UnitTestProject1
         public async Task Launch()
         {
             var tasks = new List<Task<int>>();
-            var answer = "";
             var turns = 100;
+#if BROKEN
+            // this method level variable becomes closed over in the "locateAnswer" delegate and used in multiple threads
+            var answer = "";
+#endif
 
             Func<object, int> locateAnswer = (value) =>
             {
+#if BROKEN
                 answer = value.ToString() + ":" + value.ToString().ChangeNumericToWords();
+#else
+                var answer = value.ToString() + ":" + value.ToString().ChangeNumericToWords();
+#endif
                 Debug.Print(value.ToString() + ":" + answer);
                 _answers.Add(value, answer);  // to debug, set condition on breakpoint to  (!answer.StartsWith(value.ToString()))
                 return (int)value;

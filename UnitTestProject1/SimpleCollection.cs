@@ -11,24 +11,38 @@ namespace UnitTestProject1
     {
         int[] _values = new int[2];
         int _next = -1;
-        object _lockObj = new object();
+        readonly object _lockObj = new object();
 
         public void Add(int value)
         {
             var id = Interlocked.Increment(ref _next);
 
+#if BROKEN
             var valueArray = _values;
+#endif
 
             if (id >= _values.Length)
             {
+#if BROKEN
                 valueArray = Resize(id + 15);
+#else
+                Resize(id + 15);
+#endif
             }
 
+#if BROKEN
             valueArray[id] = value;  // use condition of !valueArray.equals(_values)
+            // review the parallel watch window for variables valueArray and _values to see the current bad values
+#else
+            _values[id] = value;
+#endif
         }
 
-
+#if BROKEN
         private int[] Resize(int size)
+#else
+        private void Resize(int size)
+#endif
         {
             lock (_lockObj)
             {
@@ -43,7 +57,9 @@ namespace UnitTestProject1
 
                 Thread.Sleep(15);
 
+#if BROKEN
                 return _values;
+#endif
             }
         }
 

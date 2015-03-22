@@ -11,14 +11,14 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             var counter = 0;
-            Parallel.For(0, 1000, v =>
+            Parallel.For(0, 100000, v =>
             {
-                var x = counter + 1;
-                counter = x;
-                // counter++;
+                //var x = counter + 1;
+                //counter = x;
+                counter++;
             });
 
-            if (counter != 1000)
+            if (counter != 100000)
             {
                 throw new Exception("Counter not 1000");
             }
