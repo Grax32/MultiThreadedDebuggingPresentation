@@ -62,13 +62,13 @@
     <Compile Include="CreatingAThread.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="SimpleCollection.cs" />
-    <Compile Include="TaskMaster.cs" />
-    <Compile Include="ThreadWithCallbacks.cs" />
-    <Compile Include="ThreadWithState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoopyLoop.cs" />
     <Compile Include="LockStockAndPeril.cs" />
     <Compile Include="Gremlins.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MultiThreadedDebugging.pptx" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

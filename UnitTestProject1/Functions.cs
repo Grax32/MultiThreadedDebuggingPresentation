@@ -9,11 +9,12 @@ namespace UnitTestProject1
 {
     public static class Functions
     {
+        // found on the internet 
+        // https://github.com/aaasekar/store/blob/master/NaveenaAccounts/NaveenaAudit/NumberToText.cs
 
         public static string ChangeNumericToWords(this double numb)
         {
-            String num = numb.ToString();
-            return changeToWords(num, false);
+            return changeToWords(numb.ToString(), false);
         }
         public static string ChangeCurrencyToWords(this string numb)
         {
